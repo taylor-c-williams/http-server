@@ -33,3 +33,19 @@ it('returns deserialized body from req emitted events', async () => {
   const body = await promise;
   expect(body).toEqual({ bond: 'james bond' });
 });
+
+it('throws if parsing fails', async () => {
+  const req = new EventEmitter();
+  req.headers = { 'content-type': 'application/json' };
+  req.method = 'POST';
+  const promise = bodyParser(req);
+  req.emit('data', '{"bad empanada"}');
+  req.emit('end');
+
+  expect.assertions(1);
+  try {
+    await promise;
+  } catch (e) {
+    expect(e).toEqual('JSON FAIL');
+  }
+});
