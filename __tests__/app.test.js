@@ -18,7 +18,7 @@ describe('http server + CRUD API', () => {
 
   it('creates a new database object and returns it via POST', async () => {
     const synth = { model: 'Juno 6', analog: true };
-    const res = await (await request(app).post('/synths')).send(synth);
+    const res = await request(app).post('/synths').send(synth);
 
     expect(res.body).toEqual({ ...synth, id: expect.any(String) });
   });
